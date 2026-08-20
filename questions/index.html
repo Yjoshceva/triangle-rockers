@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Verification</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body, html {
+            height: 100%;
+            background-color: #0a0a0c;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .card-container {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 440px;
+            background: rgba(18, 18, 24, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 33%;
+            background: #6366f1;
+            height: 100%;
+            transition: width 0.4s ease;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.4;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .choice-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            outline: none;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .choice-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .arrow {
+            color: #6366f1;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="card-container">
+        <!-- Dynamic Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="pBar"></div>
+        </div>
+        
+        <!-- Dynamic Question Title -->
+        <h1 id="questionTitle">What is your primary goal today?</h1>
+        
+        <!-- Dynamic Answer Buttons -->
+        <div class="btn-group" id="optionsGroup">
+            <button class="choice-btn" onclick="nextQuestion(1)"><span>🚀 Scale my business or project</span> <span class="arrow">&rarr;</span></button>
+            <button class="choice-btn" onclick="nextQuestion(1)"><span>💰 Find deals and hidden rewards</span> <span class="arrow">&rarr;</span></button>
+            <button class="choice-btn" onclick="nextQuestion(1)"><span>🛠️ Discover powerful new tools</span> <span class="arrow">&rarr;</span></button>
+        </div>
+    </div>
+
+    <script>
+        // Simple step-by-step memory
+        let currentStep = 1;
+
+        function nextQuestion(chosenOption) {
+            const title = document.getElementById('questionTitle');
+            const options = document.getElementById('optionsGroup');
+            const bar = document.getElementById('pBar');
+
+            if (currentStep === 1) {
+                currentStep = 2;
+                bar.style.width = '66%';
+                title.innerText = "How much time do you want to spend setting things up?";
+                options.innerHTML = `
+                    <button class="choice-btn" onclick="nextQuestion(2)"><span>⏱️ Less than 5 minutes (Instant)</span> <span class="arrow">&rarr;</span></button>
+                    <button class="choice-btn" onclick="nextQuestion(2)"><span>⏳ I have time to customize everything</span> <span class="arrow">&rarr;</span></button>
+                `;
+            } else if (currentStep === 2) {
+                currentStep = 3;
+                bar.style.width = '100%';
+                title.innerText = "Awesome. Ready to view your matches?";
+                options.innerHTML = `
+                    <button class="choice-btn" onclick="finishSetup()"><span>✨ Show Me My Recommended Apps</span> <span class="arrow">&rarr;</span></button>
+                `;
+            }
+        }
+
+        function finishSetup() {
+            // Replace the link below with your final partner/affiliate link later!
+            window.location.href = 'https://google.com';
+        }
+    </script>
+</body>
+</html>

